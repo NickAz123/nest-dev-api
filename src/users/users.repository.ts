@@ -36,6 +36,14 @@ export class UsersRepository {
         return result.rows[0];
     }
 
+    async findByEmail(email: string): Promise<User | undefined> {
+        const result = await this.pool.query<User>(
+            "SELECT * FROM users WHERE email = $1 AND is_deleted = FALSE LIMIT 1",
+            [email],
+        );
+        return result.rows[0];
+    }
+
     async findByIdWithSettings(
         id: number,
     ): Promise<UserWithSettings | undefined> {

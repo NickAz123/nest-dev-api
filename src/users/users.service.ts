@@ -39,6 +39,10 @@ export class UsersService {
         return user;
     }
 
+    findByEmail(email: string): Promise<User | undefined> {
+        return this.users.findByEmail(email);
+    }
+
     async create(dto: CreateUserDto): Promise<PublicUser> {
         const passwordHash = await this.passwords.hash(dto.password);
 

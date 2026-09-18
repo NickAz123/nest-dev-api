@@ -67,6 +67,16 @@ export class UsersController {
         return this.usersService.updatePassword(id, dto);
     }
 
+    // //Special bypass route for setting initial hashed passwords from an empty schema. DO NOD expose/remove on production.
+    // @Patch(":id/update-password-bypass")
+    // @HttpCode(HttpStatus.NO_CONTENT)
+    // updatePasswordBypass(
+    //     @Param("id", parseIdPipe("USER_NOT_FOUND")) id: number,
+    //     @Body() dto: UpdatePasswordDto,
+    // ): Promise<void>{
+    //     return this.usersService.updatePasswordBypass(id, dto);
+    // }
+
     @Delete(":id/delete")
     @HttpCode(HttpStatus.NO_CONTENT)
     remove(

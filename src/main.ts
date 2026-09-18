@@ -6,6 +6,7 @@ import session from "express-session";
 import type { RedisClientType } from "redis";
 
 import { AppModule } from "./app.module";
+import { SESSION_COOKIE_NAME } from "./auth/session.constants";
 import { REDIS_CLIENT } from "./redis/redis.constants";
 
 async function bootstrap(): Promise<void> {
@@ -26,6 +27,7 @@ async function bootstrap(): Promise<void> {
                 prefix: "gearr:session:",
                 ttl: ttlSeconds,
             }),
+            name: SESSION_COOKIE_NAME,
             secret: config.getOrThrow<string>("SECRET_KEY"),
             resave: false, // Prevents resaving unchanged sessions
             saveUninitialized: false, // Avoids creating blank sessions for guests

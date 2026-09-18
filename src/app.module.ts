@@ -6,8 +6,6 @@ import { AuthModule } from "./auth/auth.module";
 import { AllExceptionsFilter } from "./common/filters/all-exceptions.filter";
 import { envValidationSchema } from "./config/env.validation";
 import { DatabaseModule } from "./database/database.module";
-import { GearModule } from "./gear/gear.module";
-import { PartModule } from "./part/part.module";
 import { RedisModule } from "./redis/redis.module";
 import { UsersModule } from "./users/users.module";
 
@@ -23,8 +21,6 @@ import { UsersModule } from "./users/users.module";
         RedisModule,
         AuthModule,
         UsersModule,
-        GearModule,
-        PartModule,
     ],
     providers: [
         {

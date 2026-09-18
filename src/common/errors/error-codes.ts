@@ -17,6 +17,25 @@ export const SYS_ERROR_CODES = {
     },
 } as const satisfies Record<string, ErrorDefinition>;
 
+export const AUTH_ERROR_CODES = {
+    AUTH_INVALID_CREDENTIALS: {
+        status: 401,
+        message: "Invalid email or password.",
+    },
+    AUTH_CREDENTIALS_REQUIRED: {
+        status: 400,
+        message: "Email and password are required.",
+    },
+    AUTH_NOT_AUTHENTICATED: {
+        status: 401,
+        message: "Authentication required.",
+    },
+    AUTH_SESSION_ERROR: {
+        status: 500,
+        message: "Failed to persist the session.",
+    },
+} as const satisfies Record<string, ErrorDefinition>;
+
 export const USER_ERROR_CODES = {
     USER_NOT_FOUND: {
         status: 404,
@@ -104,6 +123,7 @@ export const PART_ERROR_CODES = {
 
 export const ALL_ERRORS = {
     ...SYS_ERROR_CODES,
+    ...AUTH_ERROR_CODES,
     ...USER_ERROR_CODES,
     ...GEAR_ERROR_CODES,
     ...PART_ERROR_CODES,

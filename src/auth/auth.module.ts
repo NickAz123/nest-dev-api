@@ -1,14 +1,14 @@
 import { Module } from "@nestjs/common";
 
-import { PasswordService } from "./password.service";
+import { UsersModule } from "../users/users.module";
+import { AuthController } from "./auth.controller";
+import { AuthService } from "./auth.service";
+import { PasswordModule } from "./password.module";
 
-/**
- * Home for credential handling. Currently just password hashing; the
- * login/logout/dashboard routes that were commented out in `routes/login.js`
- * belong here when they are implemented.
- */
 @Module({
-    providers: [PasswordService],
-    exports: [PasswordService],
+    imports: [PasswordModule, UsersModule],
+    controllers: [AuthController],
+    providers: [AuthService],
+    exports: [AuthService],
 })
 export class AuthModule {}
