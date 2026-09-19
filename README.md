@@ -1,9 +1,13 @@
 # GEARR API
 
-`v2.0.0` — NestJS
+`v2.0.0`
 
-REST API for tracking gear (bikes, boards, …), their parts and maintenance.
-Backed by PostgreSQL, with Redis-backed sessions.
+REST API Template built on NestJS. Used as a quick start template for building your own API. 
+
+- Easy boilerplate and route examples to build your own API and DB schema out the box.
+- Launches pre-configured, containerized PSQL database and Redis storage to handle data and session storage.
+- All components can be deployed in one package, or run separately for local development.
+- Other nice to haves like custom error handling and password hashing already configured.
 
 (see wiki for details)
 
@@ -16,30 +20,6 @@ Backed by PostgreSQL, with Redis-backed sessions.
 | Sessions    | `express-session` + `connect-redis`                 |
 | Validation  | `class-validator` / `class-transformer` DTOs        |
 | Config      | `@nestjs/config` with Joi schema validation         |
-
-## Layout
-
-```
-src/
-  main.ts                  bootstrap: session middleware, shutdown hooks
-  app.module.ts            root module, global exception filter
-  config/                  environment variable schema
-  common/
-    errors/                error-code registry, AppException, PG error codes
-    filters/               AllExceptionsFilter -> { status, code, message }
-    pipes/                 validation/parse pipes that raise domain error codes
-  database/                pg Pool provider + dynamic SQL builders
-  redis/                   connected Redis client provider
-  auth/                    PasswordService (bcrypt); future login routes
-  users/                   controller -> service -> repository (+ DTOs, entity)
-  gear/                    controller -> service -> repository (+ DTOs, entity)
-db/init.sql                schema and seed data
-```
-
-The layering mirrors the previous Express app: **controller** (HTTP shape and
-status codes) → **service** (business rules, error-code mapping) →
-**repository** (all SQL). The pool is injected rather than imported as a
-singleton, so repositories are unit-testable.
 
 ## Getting started
 
@@ -78,12 +58,8 @@ docker compose up --build
 | `PUT`    | `/users`                      | Create; also seeds a settings row        |
 | `PATCH`  | `/users/:id`                  | Partial update of name/username/email    |
 | `PATCH`  | `/users/:id/update-password`  | Verifies current password; `204`         |
+| `PATCH`  | `/users/:id/update-password-bypass`  | Sets password without hash check; `204`         |
 | `DELETE` | `/users/:id/delete`           | Soft delete; `204`                       |
-| `GET`    | `/gear/:id`                   | Single gear item                         |
-| `GET`    | `/gear/user-gear/:id`         | All gear for a user                      |
-| `PUT`    | `/gear/:id`                   | Create gear for user `:id`; seeds health |
-
-### Errors
 
 Every failure returns the same envelope:
 
@@ -94,8 +70,3 @@ Every failure returns the same envelope:
 `status` is `"fail"` for 4xx and `"error"` for 5xx. Codes are defined in
 `src/common/errors/error-codes.ts`; raise one by throwing
 `new AppException('USER_NOT_FOUND')` anywhere in a service.
-
-## Environment
-
-See `!EXAMPLE.env`. All variables are validated at boot — the process exits
-immediately if any required one is missing or malformed.
