@@ -112,6 +112,27 @@ export class UsersService {
         }
     }
 
+    async updatePasswordBypass(
+        id: number,
+        dto: UpdatePasswordDto,
+    ): Promise<void> {
+        const user = await this.users.findById(id);
+
+        // The Express version read `user.password` before checking for null,
+        // which threw an unhandled rejection and left the request hanging.
+        if (!user) {
+            throw new AppException("USER_NOT_FOUND");
+        }
+
+        const newPasswordHash = await this.passwords.hash(dto.newPassword);
+
+        try {
+            await this.users.updatePassword(id, newPasswordHash);
+        } catch {
+            throw new AppException("USER_UPDATE_FAIL");
+        }
+    }
+
     async softDelete(id: number): Promise<void> {
         const user = await this.users.findById(id);
 
