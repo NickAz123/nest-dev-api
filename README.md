@@ -1,4 +1,4 @@
-# GEARR API
+# Nest.js API Template
 
 `v2.0.0`
 
